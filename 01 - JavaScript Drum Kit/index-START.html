@@ -59,6 +59,34 @@
 
 <script>
 
+  // Add Event listener on doc that triggers audio to be played on pressing a key down
+document.addEventListener('keydown', function (event) {
+  // target the audio related to the event via data key
+  const audio = document.querySelector(`audio[data-key="${event.keyCode}"]`)
+  // target the key related to the event via data key
+  const key = document.querySelector(`.key[data-key="${event.keyCode}"]`)
+  // if there is no audio, get rid
+  if(!audio) return;
+  // set the audio current time to 0 so that the key resets every time its pressed
+  audio.currentTime = 0;
+  // play the audio
+  audio.play();
+  // add the class playing to the relevant key
+  key.classList.add('playing');
+});
+
+function removeTransition(e) {
+  // there are 6 messages, get rid of 5
+  if (e.propertyName != "box-shadow") return;
+  // remove the class from the target key so that it fades away
+  this.classList.remove("playing");
+}
+
+// select all the keys
+const keys = document.querySelectorAll('.key')
+// for each key add an event listener at the end of the transition that removes the playing class.
+keys.forEach( key => key.addEventListener('transitionend', removeTransition));
+
 </script>
 
 
